@@ -14,4 +14,4 @@ Moreover, the project also involved creating a database structure to manage user
 
 A full report of the project is available in PDF format:
 
-[View Full Report (PDF)](./docs/report.pdf)
+[View Full Report (PDF)](./project-report-FSWA-RamonCasas.pdf)
