@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Courses by Name</title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    <main>
+        <div class="container">
+            <h1>Browse Courses by Name</h1>
+            <div class="card-container">
+                <% courses.forEach(function(course) { %>
+                    <div class="card">
+                        <a href="/courses/<%= course._id %>">
+                            <img src="<%= course.image %>" alt="<%= course.name %>">
+                            <p><%= course.name %></p>
+                            <p>Price: <%= course.price %>€</p>
+                        </a>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+
+</body>
+</html>

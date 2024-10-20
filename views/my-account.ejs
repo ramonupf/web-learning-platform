@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My account</title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+    
+    <%- include('partials/header') %>
+
+    <main>
+        <div class="container">
+            <h1> Welcome, <%= user.firstName  %></h1>
+            <section id="about">
+                <div class="about-container">
+                    <div class="profile-picture-container">
+                        <img src="<%= user.profilePicture %>" alt="Profile Picture">
+                    </div>
+                    <div class="details">
+                        <p>Email: <%= user.email %></p>
+                        <p>Phone: <%= user.phone %></p>
+                        <% if (user.accountType === 'Instructor') { %>
+                            <p>Instructor Webpage: 
+                                <a href="/instructors/<%= user._id %>"><%= user.firstName %> Personal Webpage</a>
+                            </p>
+                        <% } %>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin-only section -->
+            <% if (user.accountType === 'Admin') { %>
+                <section id="admin-dashboard">
+                    <h2>Admin Dashboard</h2>
+                    <ul>
+                        <a href="/admin/manage-courses"><li>Manage All Courses</li></a>
+                        <a href="<%= mongodbAtlasUrl %>" target="_blank"><li>Go to MongoDB Atlas</li></a>
+                    </ul>
+                </section>
+            <% } %>
+
+            <% if (user.accountType === 'Instructor') { %>
+                <!-- instructor-only section -->
+                <section id="course-list">
+                    <h2>Your Courses as an Instructor</h2>
+                    <ul>
+                        <% if (coursesInstructing.length > 0) { %>
+                            <% coursesInstructing.forEach(course => { %>
+                                <a href="/courses/<%= course._id %>">
+                                    <li><%= course.name %></li>
+                                </a>
+                            <% }) %>
+                        <% } else { %>
+                            <li>You are not managing any courses yet.</li>
+                        <% } %>
+                        <a href="add-course"><!-- add Course Button -->
+                            <li class="add-course"> 
+                                Add a New Course
+                            </li>
+                        </a>
+                    </ul>
+                </section>
+            <% } %>
+
+            <section id="course-list">
+                <h2>Your Courses</h2>
+                <ul>
+                    <% if (Array.isArray(user.coursesEnrolled) && user.coursesEnrolled.length > 0) { %>
+                        <% user.coursesEnrolled.forEach(enrolled => { %>
+                            <a href="/courses/<%= enrolled.course._id %>">
+                                <li>
+                                    <%= enrolled.course.name %> - 
+                                    <% if (enrolled.enrollmentEndDate) { %> 
+                                        <% //show remaining time for 7-day courses -->
+                                            const now = new Date();
+                                            const endDate = new Date(enrolled.enrollmentEndDate);
+                                            const remainingTime = Math.ceil((endDate - now) / (1000 * 60 * 60 * 24)); //clculate days remaining
+                                        %>
+                                        <% if (remainingTime > 0) { %>
+                                            <span>Remaining time: <%= remainingTime %> days</span>
+                                        <% } else { %>
+                                            <span>7-Day Access - Expired on <%= endDate.toLocaleDateString() %></span>
+                                        <% } %>
+                                    <% } else { %>
+                                        <!-- Permanent Access -->
+                                        <span>Permanent Access</span>
+                                    <% } %>
+                                </li>
+                            </a>
+                        <% }) %>
+                    <% } else { %>
+                        <li>You are not enrolled in any courses yet.</li>
+                    <% } %>
+                </ul>
+            </section>
+                
+            <section id="course-list">
+                <h2>Your Trials</h2>
+                <ul>
+                    <% if (Array.isArray(user.trialCourses) && user.trialCourses.length > 0) { %>
+                        <% user.trialCourses.forEach(trial => { %>
+                            <a href="/courses/<%= trial.course._id %>">
+                                <li>
+                                    <%= trial.course.name %> - 
+                                    <% if (trial.trialActive) { %> 
+                                        Trial Active until <%= trial.trialEndDate.toLocaleDateString() %>
+                                    <% } else { %>
+                                        Trial Expired
+                                    <% } %>
+                                </li>
+                            </a>
+                        <% }) %>
+                    <% } else { %>
+                        <li>You have no trial courses.</li>
+                    <% } %>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+
+</body>
+
+</html>

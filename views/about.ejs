@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About us</title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+    <%- include('partials/header') %> 
+    <div class="container">
+        <main>
+            <h1>About us</h1>
+            <div class = "members-container">
+                <% members.forEach(member => { %>
+                    <div class="member" onclick="openModal('<%= member._id %>-modal')">
+                        <img src="<%= member.photoUrl %>" alt="photo of <%= member.name %>">
+                        <h3><%= member.name %></h3>
+                        <p><%= member.role %></p>
+                    </div>
+                <% }) %>
+            </div>
+
+            <% members.forEach(member => { %>
+                <div id="<%= member._id %>-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal('<%= member._id %>-modal')">&times;</span>
+                        <h2><%= member.name %></h2>
+                        <p><%= member.bio %></p>
+                    </div>
+                </div>
+            <% }) %>
+        </main>
+    </div>
+
+    <%- include('partials/footer') %>
+</body>
+
+<script src="/scripts/modal-management.js"></script>
+
+</html>

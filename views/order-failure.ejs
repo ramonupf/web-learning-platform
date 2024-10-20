@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Failed</title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+
+    <%- include('partials/header') %>
+
+    <main>
+        <div class="container">
+            <h1>Order Failed</h1>
+            <p class="error-message"><%= message %></p>
+            <div class="buttons">
+                <a href="/"><button>Go Back to Home</button></a>
+                <a href="javascript:history.back()"><button>Try Again</button></a>
+            </div>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+
+</body>
+</html>

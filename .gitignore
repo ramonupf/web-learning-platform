@@ -1,0 +1,16 @@
+# Ignore directories
+/node_modules/
+/dist/
+/venv/
+
+# Ignore specific files
+.env
+secret_config.json
+README.txt
+mongodb_atlas_creds.txt
+
+# Ignore all .log files
+*.log
+
+# Ignore all files in the temp directory
+/temp/*

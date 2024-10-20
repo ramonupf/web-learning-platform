@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+    <div class="container">
+        <main>
+            <h1>Register</h1>
+
+            <form id= "registerForm" method="post" action="/register" enctype="multipart/form-data">
+                <h2>Registration form</h2>
+                <!-- Display the error message:-->
+                <% if (typeof error !== 'undefined') { %>
+                    <p class="error-message"><%= error %></p> 
+                <% } %>
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email" id="titleLabel">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+
+                <!-- Phone -->
+                <div class="form-group">
+                    <label for="phone" id="titleLabel">Phone:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password" id="titleLabel">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <!-- Password Retype-->
+                <div class="form-group">
+                    <label for="password" id="titleLabel">Retype Password:</label>
+                    <input type="password" id="passwordRetype" name="passwordRetype" required>
+                    <small id="passwordMatchMessage"></small><!-- matching feedback -->
+                </div>
+
+                <!-- Profile Picture (upload file field) -->
+                <label for="profilePicture" id="titleLabel">Profile Picture:</label>
+                <input type="file" id="profilePicture" name="profilePicture" required>
+
+                <!-- First Name -->
+                <div class="form-group">
+                    <label for="firstName" id="titleLabel">First Name:</label>
+                    <input type="text" id="firstName" name="firstName" maxlength="50" placeholder="Enter your first name" required>
+                </div>
+
+                <!-- Last Name -->
+                <div class="form-group">
+                    <label for="lastName" id="titleLabel">Last Name:</label>
+                    <input type="text" id="lastName" name="lastName" maxlength="50" placeholder="Enter your last name" required>
+                </div>
+
+                <!-- Address -->
+                <div class="form-group">
+                    <label for="address" id="titleLabel">Address:</label>
+                    <input type="text" id="address" name="address" maxlength="50" placeholder="Enter your address" required>
+                </div>
+
+                <!-- City -->
+                <div class="form-group">
+                    <label for="city" id="titleLabel">City:</label>
+                    <input type="text" id="city" name="city" maxlength="50" placeholder="Enter your city" required>
+                </div>
+
+                <!-- Zipcode -->
+                <div class="form-group">
+                    <label for="zipcode" id="titleLabel">Zipcode:</label>
+                    <input type="text" id="zipcode" name="zipcode" maxlength="50" placeholder="Enter your zipcode" required>
+                </div>
+
+                <!-- Country Select Dropdown -->
+                <div class="form-group">
+                    <label for="country">Country:</label>
+                    <select id="country" name="country" required>
+                        <option value="" disabled selected>Select a country</option>
+                    </select>
+                </div>
+
+                <!-- Account type -->
+                <div class="radio-group">
+                    <label id="titleLabel">Account type:</label>
+                    <label><input type="radio" id="accountType" name="accountType" value="Instructor" required>Instructor</label>
+                    <label><input type="radio" id="accountType" name="accountType" value="Learner">Learner</label>
+                </div>
+
+                <!-- Instructor-Specific Fields -->
+                <div id="instructorFields" style="display: none;">
+                    <label for="schoolName" id="titleLabel">School Name:</label>
+                    <input type="text" id="schoolName" name="schoolName">
+
+                    <label for="jobTitle" id="titleLabel">Job Title:</label>
+                    <input type="text" id="jobTitle" name="jobTitle">
+
+                    <div class="checkbox-group">
+                        <label id="titleLabel">Specialization(s):</label>
+                        <% categories.forEach(function(category) { %>
+                            <label>
+                                <input type="checkbox" name="specialization" value="<%= category.name %>">
+                                <%= category.name %>
+                            </label>
+                        <% }); %>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="buttons">
+                    <input type="submit" value="Send">
+                    <input type="reset" value="Clear all">
+                </div>
+
+            </form>
+        </main>
+    </div>
+    <%- include('partials/footer') %>
+    <script src="/scripts/password-match.js"></script>
+    <script src="/scripts/register-validation.js"></script>
+    <script src="/scripts/country-list.js"></script>
+
+    <script>
+        //displaying the whole menu for instructor registrations
+        document.getElementById('registerForm').addEventListener('change', function(event) {
+            const accountType = document.querySelector('input[name="accountType"]:checked').value;
+            const instructorFieldsBlock = document.getElementById('instructorFields')
+            if (accountType === 'Instructor') {
+                instructorFieldsBlock.style.display = 'block';
+            } else{
+                instructorFieldsBlock.style.display = 'none';
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

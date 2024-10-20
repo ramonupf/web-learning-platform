@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Online Learning Platform</title>
+        <link rel="stylesheet" href="/styles/main.css">
+    </head>
+    <body>
+        <%- include('partials/header') %>
+        <main>
+            <div class="container">
+                <section id="new-instructors" class="card-section">
+                    <h2>New Instructors</h2>
+                    <div class="card-container">
+                        <% newInstructors.forEach(function(instructor) { %>
+                            <div class="card">
+                                <a href="/instructors/<%= instructor._id %>">
+                                    <img src="<%= instructor.profilePicture %>" alt="<%= instructor.firstName %> <%= instructor.lastName %>">
+                                    <p><%= instructor.firstName %> <%= instructor.lastName %></p>
+                                </a>
+                            </div>
+                        <% }) %>
+                    </div>
+                </section>
+                
+                <section id="new-courses" class="card-section">
+                    <h2>New Courses</h2>
+                    <div class="card-container">
+                        <% newCourses.forEach(function(course) { %>
+                            <div class="card">
+                                <a href="/courses/<%= course._id %>">
+                                    <img src="<%= course.image %>" alt="<%= course.name %>">
+                                    <p><%= course.name %></p>
+                                    <p>Price: <%= course.price %>€</p>
+                                </a>
+                                <a href="/instructors/<%= course.instructors[0]._id %>">
+                                    <p>Instructor:
+                                    <%= course.instructors[0].firstName %> <%= course.instructors[0].lastName %>
+                                    </p>
+                                </a>
+                            </div>
+                        <% }) %>
+                    </div>         
+                </section>
+                
+                <section id="featured-instructor" class="card-section">
+                    <h2>Featured Instructors</h2>
+                    <div class="horizontal-card-container">
+                        <% if (featuredInstructors.length > 0) { %>
+                            <% featuredInstructors.forEach(function(instructor) { %>
+                            <div class="horizontal-card">
+                                <a href="/instructors/<%= instructor._id %>">
+                                    <img src="<%= instructor.profilePicture %>" alt="<%= instructor.firstName %> <%= instructor.lastName %>" class="profile-picture">
+                                </a>
+                                <div class="card-details">
+                                    <a href="/instructors/<%= instructor._id %>">
+                                        <h3><%= instructor.firstName %> <%= instructor.lastName %></h3>
+                                    </a>
+                                    <p><strong>Job Title:</strong> <%= instructor.jobTitle %></p>
+                                    <p><strong>School:</strong> <%= instructor.schoolName %></p>
+                                    <p><strong>Specializations:</strong></p>
+                                    <ul class="specializations-list">
+                                        <% instructor.specialization.forEach(function(spec) { %>
+                                            <li><%= spec %></li>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                            </div>
+                            <% }) %>
+                        <% } else { %>
+                            <p>No featured instructor at the moment.</p>
+                        <% } %>
+                    </div>
+                </section>
+                
+                
+                <section id="featured-courses" class="card-section">
+                    <h2>Featured Courses</h2>
+                    <div class="card-container">
+                        <% featuredCourses.forEach(function(course) { %>
+                            <div class="card">
+                                <a href="/courses/<%= course._id %>">
+                                    <img src="<%= course.image %>" alt="<%= course.name %>">
+                                    <p><%= course.name %></p>
+                                    <p>Price: <%= course.price %>€</p> 
+                                        <a href="/instructors/<%= course.instructors[0]._id %>">
+                                            <p>Instructor: <%= course.instructors[0].firstName %> <%= course.instructors[0].lastName %></p>
+                                        </a>
+                                </a>
+                            </div>
+                    <% }) %>
+                    </div>
+                </section>
+            </div>
+        </main>
+        <%- include('partials/footer') %>
+
+    </body>
+</html>

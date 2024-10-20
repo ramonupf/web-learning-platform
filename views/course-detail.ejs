@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= course.name %> - Course Detail</title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    <div class="container">
+        <main>
+            <h1><%= course.name %></h1>
+            <div class="course-banner">
+                <img src="<%= course.image %>" alt="<%= course.name %>" class="banner-image">
+            </div>
+            <section class="course-description">
+                <h2>Description</h2>
+                <p><%= course.description %></p>
+            </section>
+            <div class="about-container">
+                <section class="course-details">
+                    <h2>Details</h2>
+                    <p>Price: <%= course.price %>€</p>
+                    <p>Instructed by <a href="/instructors/<%= course.instructors[0]._id %>"><%= course.instructors[0].firstName %> <%= course.instructors[0].lastName %></a></p>
+                </section>
+                <section class="course-categories">
+                    <h2>Course Categories</h2>
+                    <ul class="specializations-list">
+                        <% course.categories.forEach(category => { %>
+                            <a href="/browse-courses-category">
+                                <li><%= category.name %></li>
+                            </a>
+                        <% }) %>
+                    </ul>
+                </section>
+            </div>
+           
+    
+            <% if (!user) { %> <!-- Guest view -->
+                <h2>Start learning now!</h2>
+                <p><a href="/login">Login</a> or <a href="/register">register</a> to start a trial or enroll in this course.</p>
+            <% } else if (user.accountType === 'Learner' || (user.accountType === 'Instructor' && !course.instructors.some(instructor => instructor._id.toString() === user._id.toString()))) { %> <!-- Learner view -->
+                <div class="buttons inline-buttons">
+                    <button onclick="location.href='/courses/<%= course._id %>/confirm-trial'">2-Day Trial</button>
+                    <button onclick="location.href='/courses/<%= course._id %>/order'">Enroll</button>
+                <% } else if ((user.accountType === 'Instructor' && user._id.toString() === course.instructors[0]._id.toString()) || user.accountType ==='Admin') { %> <!-- Instructor view -->
+                    <section id="manage-course">
+                        <h2>Manage Course</h2>
+                        <div class="buttons inline-buttons">
+                            <button onclick="openModal('edit-name-modal')">Edit Name</button>
+                            <button onclick="openModal('edit-price-modal')">Edit Price</button>
+                            <button onclick="openModal('edit-description-modal')">Edit Description</button>
+                            <button onclick="openModal('edit-image-modal')">Edit Main Image</button>
+                            <button onclick="openModal('edit-categories-modal')">Edit Categories</button>
+                            <button onclick="openModal('edit-featured-modal')">
+                                <%= course.featured ? 'Remove Featured Status' : 'Set as Featured' %>
+                            </button>    
+                        </div>
+                    </section>
+                <% } %>
+                </div>
+        </div>
+            <!-- Edit Name Modal -->
+            <div id="edit-name-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('edit-name-modal')">&times;</span>
+                    <form action="/courses/<%= course._id %>/edit-name" method="POST">
+                        <label for="name">Course Name</label>
+                        <input type="text" name="name" value="<%= course.name %>" required>
+                        <div class="buttons single-button">
+                            <button type="submit">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Edit Price Modal -->
+            <div id="edit-price-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('edit-price-modal')">&times;</span>
+                    <form action="/courses/<%= course._id %>/edit-price" method="POST">
+                        <label for="price">Course Price (€)</label>
+                        <input type="number" name="price" value="<%= course.price %>" step="0.01" required>
+                        <div class="buttons single-button">
+                            <button type="submit">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Edit Description Modal -->
+            <div id="edit-description-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('edit-description-modal')">&times;</span>
+                    <form action="/courses/<%= course._id %>/edit-description" method="POST">
+                        <label for="description">Course Description</label>
+                        <textarea name="description" required><%= course.description %></textarea>
+                        <div class="buttons single-button">
+                            <button type="submit">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Edit Image Modal -->
+            <div id="edit-image-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('edit-image-modal')">&times;</span>
+                    <form action="/courses/<%= course._id %>/edit-image" method="POST" enctype="multipart/form-data">
+                        <label for="image">Course Image</label>
+                        <input type="file" name="image" accept="image/*" required>
+                        <div class="buttons single-button">
+                            <button type="submit">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Edit Categories Modal -->
+            <div id="edit-categories-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('edit-categories-modal')">&times;</span>
+                    <form action="/courses/<%= course._id %>/edit-categories" method="POST">
+                        <label for="categories">Select Categories</label>
+                        <div class="checkbox-group">
+                            <% categories.forEach(category => { %>
+                                <input type="checkbox" name="categories" value="<%= category._id %>" 
+                                    <%= course.categories.some(cat => cat._id.equals(category._id)) ? 'checked' : '' %>>
+                                <label><%= category.name %></label>
+                            <% }) %>
+                        </div>
+                        <div class="buttons single-button">
+                            <button type="submit">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Edit Featured Modal -->
+            <div id="edit-featured-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('edit-featured-modal')">&times;</span>
+                    <form action="/courses/<%= course._id %>/edit-featured" method="POST">
+                        <label for="featured">Feature this course?</label>
+                        <select name="featured" id="featured">
+                            <option value="true" <%= course.featured ? 'selected' : '' %>>Yes, feature it</option>
+                            <option value="false" <%= !course.featured ? 'selected' : '' %>>No, remove featured status</option>
+                        </select>
+                        <div class="buttons single-button">
+                            <button type="submit">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <%- include('partials/footer') %>
+
+</body>
+<script src="/scripts/modal-management.js"></script>
+
+</html>

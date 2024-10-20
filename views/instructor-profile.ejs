@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= instructor.firstName %> <%= instructor.lastName %> - Instructor Profile</title>    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+    
+    <%- include('partials/header-instructor') %>
+
+    <main>
+        <div class="container">
+            <!-- About the Instructor -->
+            <section id="about">
+                <h2>About <%= instructor.firstName %> <%= instructor.lastName %></h2>
+                <div class="about-container">
+                    <div class="details">
+                        <p><strong>School: </strong> <%= instructor.schoolName %></p>
+                        <p><strong>Job Title: </strong> <%= instructor.jobTitle %></p>
+                        <p><strong>Specializations: </strong></p>
+                        <ul class="specializations-list">
+                            <% instructor.specialization.forEach(function(spec) { %>
+                                <li><%= spec %></li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                    <div class="profile-picture-container">
+                        <img src="<%= instructor.profilePicture %>" alt="Profile Picture">
+                    </div>
+                </div>
+            </section>
+
+            <!-- New Courses -->
+            <h2>New Courses</h2>
+            <section id="new-courses" class="card-section">
+                <div class="card-container">
+                    <% if (newCourses && newCourses.length > 0) { %>
+                        <% newCourses.forEach(course => { %>
+                            <div class="card">
+                                <a href="/courses/<%= course._id %>">
+                                    <h3><%= course.name %></h3>
+                                    <img src="<%= course.image %>" alt="<%= course.name %>">
+                                    <p>Price: <%= course.price %>€</p>
+                                </a>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p>No new courses available at the moment.</p>
+                    <% } %>
+                </div>
+            </section>
+
+            <!-- All Courses -->
+            <section id="course-list">
+                <h2>All Courses</h2>
+                <ul>
+                    <% if (courses && courses.length > 0) { %>
+                        <% courses.forEach(course => { %>
+                            <a href="/courses/<%= course._id %>">
+                                <li>
+                                    <%= course.name %> - Price: <%= course.price %>€
+                                </li>
+                            </a>
+                        <% }) %>
+                </ul>
+                <% } else { %>
+                    <p>No courses available at the moment.</p>
+                <% } %>
+            </section>
+        </div>
+    </main>
+
+    <%- include('partials/footer-instructor') %>
+
+</body>
+
+</html>

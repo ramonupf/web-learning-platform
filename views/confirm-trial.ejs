@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Trial - <%= course.name %></title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+
+<%- include('partials/header') %>
+
+<main>
+    <div class="container">
+        <h1>Trial Confirmation</h1>
+        <form action="/courses/<%= course._id %>/trial" method="POST">
+            <p>Are you sure you want to start a 2-day trial for the course "<%= course.name %>"?</p>
+            <div class="buttons">
+                <button type="submit">Confirm Trial</button>
+                <a href="/courses/<%= course._id %>"><button type="button">Cancel</button></a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<%- include('partials/footer') %>
+
+</body>
+</html>

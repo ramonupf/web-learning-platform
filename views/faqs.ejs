@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQs</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <style>
+        summary {
+            list-style: none; /* remove default arrow list style */
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/header') %> 
+    <div class="container">
+        <main>
+            <h1>Frequently Asked Questions</h1>
+            <section class="faq-list">
+                <% faqs.forEach(faq => { %>
+                    <details>
+                        <summary aria-expanded="false"> <!-- answers are not shown by default-->
+                            <h3><%= faq.question %></h3>
+                        </summary>
+                        <p><%= faq.answer %></p>
+                    </details>
+                <% }) %>
+            </section>
+        </main>
+    </div>        
+    <%- include('partials/footer') %>
+</body>
+
+</html>

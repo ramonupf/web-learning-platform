@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Courses by Category</title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    <main>
+        <div class="container">
+            <h1>Browse Courses by Category</h1>
+            <% for (const category in coursesByCategory) { %>
+                <h2><%= category %></h2>
+                <div class="card-container">
+                    <% if (coursesByCategory[category].length > 0) { %>
+                        <% coursesByCategory[category].forEach(course => { %>
+                            <div class="card">
+                                <a href="/courses/<%= course._id %>">
+                                    <img src="<%= course.image %>" alt="<%= course.name %>">
+                                    <%= course.name %>
+                                    <p>Price: <%= course.price %>€</p>
+                                </a>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p>No courses available in this category</p>
+                    <% } %>
+                </div>
+            <% } %>
+        </div>
+    </main>
+    <%- include('partials/footer') %>
+</body>
+</html>

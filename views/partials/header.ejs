@@ -1,0 +1,73 @@
+<header>
+  <div class="container">
+    <div class="logo">
+      <a href="/"><img src="/images/logo.svg" alt="Platform Logo"></a>
+    </div>
+    <nav>
+      <ul class="main-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/my-account">My Account</a></li>
+
+        <!-- BROWSE MENU WITH SUB-MENU ITEMS -->
+        <li class="dropdown">
+          <a href="#" class="dropbtn">Browse</a><!-- parent link --> 
+          <ul class="dropdown-content">
+            <li><a href="/browse-courses-name">Browse Courses by Name</a></li>
+            <li><a href="/browse-courses-category">Browse Courses by Category</a></li>
+          </ul>
+        </li>
+
+        <li><a href="/faqs">FAQs</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <!-- show Login/Register or Username/Logout buttons if the user is not logged in -->
+        <% if (user) { %> <!-- If the user IS logged in -->
+          <li class="hello-message"><a href="/my-account">Hello, <%= user.firstName %>!</a></li>
+          <li class="user-opt"><a href="/logout">Logout</a></li>
+        <% } else { %> <!-- If the user is NOT logged in -->
+          <li class="user-opt"><a href="/login">Login</a></li>
+          <li class="user-opt"><a href="/register">Register</a></li>
+        <% } %>
+      </ul>
+    </nav>
+
+    <!-- HAMBURGER icon -->
+    <div class="hamburger-icon" onclick="toggleMenu()">
+      &#9776; <!-- Unicode for icon -->
+    </div>
+  </div>
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <% if (user) { %> <!-- If the user IS logged in -->
+      <a href="/my-account">Hello, <%= user.firstName %>!</a>
+    <% } %>
+    <a href="/">Home</a>
+    <a href="/about">About Us</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/my-account">My Account</a>
+    <a href="/browse-courses-name">Browse Courses by Name</a>
+    <a href="/browse-courses-category">Browse Courses by Category</a>
+    <a href="/faqs">FAQs</a>
+    <a href="/contact">Contact</a>
+    <!-- show Login/Register or Username/Logout buttons if the user is not logged in -->
+    <% if (user) { %> <!-- If the user IS logged in -->
+      <a href="/logout" class="user-mob">Logout</a>
+    <% } else { %> <!-- If the user is NOT logged in -->
+      <a href="/login" class="user-mob">Login</a>
+      <a href="/register" class="user-mob">Register</a>
+    <% } %>
+  </div>
+</header>
+
+<script>
+//activate/deactivate mobile menu
+function toggleMenu() {
+    var menu = document.getElementById('mobileMenu');
+    if (menu.style.display === 'block') {
+        menu.style.display = 'none';
+    } else {
+        menu.style.display = 'block';
+    }
+}
+</script>

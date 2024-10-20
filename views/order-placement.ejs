@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order - <%= course.name %></title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+    <body>
+    <%- include('partials/header') %>
+    <main>
+        <div class="container">
+            <h1>Order Placement</h1>
+            <p><strong>Course:</strong> <%= course.name %></p>
+            <p><strong>Instructor:</strong> <%= course.instructors[0].firstName %> <%= course.instructors[0].lastName %></p>
+            <p><strong>Price:</strong> $<%= course.price %></p>
+
+            <form action="/courses/<%= course._id %>/order-complete" method="POST">
+                <!-- Payment Options -->
+                <div>
+                    <label for="payment-method">Payment Method:</label>
+                    <select id="payment-method" name="paymentMethod">
+                        <option value="credit-card">Credit Card</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="e-wallet">E-Wallet</option>
+                    </select>
+                </div>
+
+                <!-- Access Duration Options -->
+                <div>
+                    <label for="access-duration">Access Duration:</label>
+                    <select id="access-duration" name="accessDuration">
+                        <option value="permanent">Permanent Access</option>
+                        <option value="7-days">7-Day Access</option>
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="buttons">
+                    <button type="submit">Order</button>
+                    <a href="/courses/<%= course._id %>"><button type="button">Cancel</button></a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+
+
+    </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Course Management</title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+    <%- include('partials/header') %> 
+    <div class="container">
+        <main>
+            <h1>Admin Course Management</h1>
+            <section id="course-list">
+                <ul>
+                    <% courses.forEach(course => { %>
+                    <a href="/courses/<%= course._id %>">
+                        <li><%= course.name %> - Instructor: <%= course.instructors.map(instr => instr.firstName).join(', ') %>
+                        </li>
+                    </a>
+                    <% }) %>
+                </ul>
+            </section>
+
+        </main>
+    </div>
+    <%- include('partials/footer') %>
+</body>
+</html>
